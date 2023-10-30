@@ -4,5 +4,5 @@ language: ts
 packageManager: npm
 cloudProvider: genezio
 workspace:
-  backend: D:\GitHubRepositories\crud-app\crud-app\server
-  frontend: D:\GitHubRepositories\crud-app\crud-app\client
+  backend: ./server
+  frontend: ./client
