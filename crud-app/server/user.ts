@@ -2,6 +2,8 @@
 import { UserModel } from "./models/userModel";
 import { GenezioDeploy } from "@genezio/types";
 import { DataTypes, Sequelize } from "sequelize";
+import pg from 'pg';
+
 
 
 // The type that will be used for handling a user object
@@ -31,6 +33,7 @@ export type AllUsersResponse = {
 
 const sequelize = new Sequelize(process.env.NEON_POSTGRES_URL || "", {
   dialect: "postgres", // or your database type
+  dialectModule: pg,
   define: {
     timestamps: false, // This disables the created_at and updated_at columns
   },
@@ -63,6 +66,7 @@ UserModel.init(
   }
 );
 
+
 /**
  * The User server class that will be deployed on the genezio infrastructure.
  */
@@ -76,7 +80,7 @@ export class UserHandler {
    * Private method used to connect to the DB.
    */
   #connect() {
-    try {
+    try { 
       sequelize.sync();
     } catch (err) {
       console.log(err);
@@ -90,7 +94,7 @@ export class UserHandler {
    */
   async #generateUniqueId(): Promise<number> {
     const maxId:number = await UserModel.max("userId");
-    if(!maxId){
+    if(maxId == null){
       return 0
     }
     return maxId+1;
@@ -130,6 +134,7 @@ export class UserHandler {
 
     try {
       var maxId = await this.#generateUniqueId();
+      console.log(maxId)
       var newUser = await UserModel.create({
         userId: maxId,
         name: name,

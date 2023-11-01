@@ -34,6 +34,7 @@ function AddUser() {
       return;
     }
     if (!res.success) {
+      console.log(res);
       setError(res.msg || "");
       return;
     }
