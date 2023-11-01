@@ -3,6 +3,8 @@ import { UserModel } from "./models/userModel";
 import { GenezioDeploy } from "@genezio/types";
 import { DataTypes, Sequelize } from "sequelize";
 
+
+// The type that will be used for handling a user object
 export type User = {
   userId: number; 
   name: string;
@@ -11,17 +13,19 @@ export type User = {
   verified: boolean;
 };
 
-export type AllUsersResponse = {
-  success: boolean;
-  msg?: string;
-  users?: Array<User>;
-  err?: string;
-};
-
+// The type that will be returned in some of our CRUD Functions
 export type UserResponse = {
   success: boolean;
   msg?: string;
   user?: User;
+  err?: string;
+};
+
+// The type that will be used to return all the users from the databse
+export type AllUsersResponse = {
+  success: boolean;
+  msg?: string;
+  users?: Array<User>;
   err?: string;
 };
 
@@ -78,14 +82,18 @@ export class UserHandler {
       console.log(err);
     }
   }
-
   /**
-   *
+   * Method that returns the (max userId) + 1 from the database
+   * or 0 if there are no users in the database
+   * 
    * @returns a number reprezenting the max id in the table
    */
-  async #generateRandomId(): Promise<number> {
-    const maxId: number = await UserModel.max("userId");
-    return maxId;
+  async #generateUniqueId(): Promise<number> {
+    const maxId:number = await UserModel.max("userId");
+    if(!maxId){
+      return 0
+    }
+    return maxId+1;
   }
 
   /**
@@ -121,12 +129,9 @@ export class UserHandler {
     // Create the user and add it to the database
 
     try {
-      var maxId = await this.#generateRandomId();
-      if (!maxId) {
-        maxId = 0;
-      }
+      var maxId = await this.#generateUniqueId();
       var newUser = await UserModel.create({
-        userId: maxId + 1,
+        userId: maxId,
         name: name,
         email: email,
         gender: gender,

@@ -1,3 +1,4 @@
+// client/src/views/Dashboard.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { UserHandler, User } from "@genezio-sdk/crud-app_us-east-1";

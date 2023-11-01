@@ -1,4 +1,4 @@
-// src/App.js
+// client/src/App.tsx
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./views/Dashboard";
