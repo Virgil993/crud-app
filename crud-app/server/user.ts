@@ -4,7 +4,7 @@ import { GenezioDeploy } from "@genezio/types";
 import { DataTypes, Sequelize } from "sequelize";
 
 export type User = {
-  userId: number;
+  userId: number; 
   name: string;
   email: string;
   gender: string;
