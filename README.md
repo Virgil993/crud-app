@@ -23,7 +23,6 @@ If you want to deploy your application step-by-step, follow the guidelines below
 
 ## Deploy the example in the Genezio infrastructure
 
-1.  
 2. Run `genezio deploy` in the root directory that contains also the `genezio.yaml` file. This will deploy both your backend enviroment and frontend enviroment in the Genezio infrastructure and it will also create an SDK that can be used to call the methods remotely.
 3. Click on the frontend link provided in the terminal to view and test your fully deployed application.
 
