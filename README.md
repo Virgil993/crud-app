@@ -15,6 +15,7 @@ If you want to deploy your application step-by-step, follow the guidelines below
 
 1. Run `npm install` in the `server/` folder to install the dependencies.
 2. Run `npm install` in the `client/` folder to install the dependencies.
+3. In the `server/` folder, create a .env file and add your NEON_POSTGRES_URL variable
    
 ## Run the example locally
 
