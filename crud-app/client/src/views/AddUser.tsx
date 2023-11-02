@@ -1,17 +1,18 @@
 // client/src/views/AddUser.tsx
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserHandler } from "@genezio-sdk/crud-app_us-east-1";
 
 function AddUser() {
-  const [name, setName] = React.useState<string>("");
-  const [email, setEmail] = React.useState<string>("");
-  const [verified, setVerified] = React.useState<boolean | null>(null);
-  const [gender, setGender] = React.useState<string>("");
-  const [error, setError] = React.useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [verified, setVerified] = useState<boolean | null>(null);
+  const [gender, setGender] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
     if (name == "") {
       setError("Name is mandatory");
       return;
@@ -114,14 +115,7 @@ function AddUser() {
             </div>
           </div>
           <div className="submit">
-            <button
-              onClick={(event) => {
-                event.preventDefault();
-                handleSubmit();
-              }}
-            >
-              Add user
-            </button>
+            <button onClick={handleSubmit}>Add user</button>
           </div>
           {error != "" ? <div className="error-alert">{error}</div> : <></>}
         </form>

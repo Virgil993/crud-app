@@ -109,7 +109,7 @@
 .user {
   display: flex;
   gap: 20px;
-  background-color: bisque;
+  background-color: #ffe4c4;
 
   padding: 20px;
   justify-content: center;
@@ -139,4 +139,9 @@
 
 .form-group > div {
   font-size: 20px;
+}
+
+.loader{
+  margin: auto;
+  margin-top: 40vh;
 }

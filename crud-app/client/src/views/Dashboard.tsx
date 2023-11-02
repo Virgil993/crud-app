@@ -1,10 +1,11 @@
 // client/src/views/Dashboard.tsx
-import React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserHandler, User } from "@genezio-sdk/crud-app_us-east-1";
+import { PacmanLoader } from "react-spinners";
 
 function Dashboard() {
-  const [users, setUsers] = React.useState<Array<User> | null>(null);
+  const [users, setUsers] = useState<Array<User> | null>(null);
   const navigate = useNavigate();
 
   const getAllUsers = async () => {
@@ -32,13 +33,29 @@ function Dashboard() {
     }
   };
 
-  React.useEffect(() => {
+  const handleSubmit = async (event: any, email: string) => {
+    event.preventDefault();
+    var answer = window.confirm("Are you sure you want to delete this user?");
+    if (answer) {
+      await deleteUser(email);
+    } else {
+      console.log("we dont delete the user");
+      return;
+    }
+  };
+
+  const handleNavigate = (event: any) => {
+    event.preventDefault();
+    navigate("/addUser");
+  };
+
+  useEffect(() => {
     if (!users) {
       getAllUsers();
     }
   }, [users]);
   return !users ? (
-    <></>
+    <PacmanLoader color="#ffe4c4" className="loader" />
   ) : (
     <div className="dashboard">
       <div className="header-all">Users management system</div>
@@ -61,18 +78,7 @@ function Dashboard() {
                 </div>
                 <div>
                   <button
-                    onClick={(event) => {
-                      event.preventDefault();
-                      var answer = window.confirm(
-                        "Are you sure you want to delete this user?"
-                      );
-                      if (answer) {
-                        deleteUser(element.email);
-                      } else {
-                        console.log("we dont delete the user");
-                        return;
-                      }
-                    }}
+                    onClick={(event) => handleSubmit(event, element.email)}
                   >
                     Delete{" "}
                   </button>
@@ -80,26 +86,12 @@ function Dashboard() {
               </div>
             );
           })}
-          <button
-            onClick={(event) => {
-              event.preventDefault();
-              navigate("/addUser");
-            }}
-          >
-            Add User
-          </button>
+          <button onClick={handleNavigate}>Add User</button>
         </div>
       ) : (
         <div className="users-container">
           <div>No users availabale</div>
-          <button
-            onClick={(event) => {
-              event.preventDefault();
-              navigate("/addUser");
-            }}
-          >
-            Add User
-          </button>
+          <button onClick={handleNavigate}>Add User</button>
         </div>
       )}
     </div>

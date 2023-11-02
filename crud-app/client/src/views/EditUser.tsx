@@ -1,16 +1,17 @@
 // client/src/views/EditUser.tsx
-import React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserHandler, User } from "@genezio-sdk/crud-app_us-east-1";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 function EditUser() {
   const navigate = useNavigate();
   const params = useParams();
-  const [user, setUser] = React.useState<User | null>(null);
-  const [name, setName] = React.useState<string>("");
-  const [verified, setVerified] = React.useState<boolean | null>(null);
-  const [gender, setGender] = React.useState<string>("");
-  const [error, setError] = React.useState("");
+  const [user, setUser] = useState<User | null>(null);
+  const [name, setName] = useState<string>("");
+  const [verified, setVerified] = useState<boolean | null>(null);
+  const [gender, setGender] = useState<string>("");
+  const [error, setError] = useState("");
 
   const getUser = async (email: string) => {
     const res = await UserHandler.getUserByEmail(email);
@@ -24,7 +25,8 @@ function EditUser() {
     setUser(res.user!);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
     if (name == "") {
       setError("Name is mandatory");
       return;
@@ -57,7 +59,7 @@ function EditUser() {
     alert("User updated successfully!");
     navigate("/dashboard");
   };
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user && params) {
       getUser(params.email || "");
     }
@@ -131,21 +133,14 @@ function EditUser() {
             </div>
           </div>
           <div className="submit">
-            <button
-              onClick={(event) => {
-                event.preventDefault();
-                handleSubmit();
-              }}
-            >
-              Edit user
-            </button>
+            <button onClick={handleSubmit}>Edit user</button>
           </div>
           {error != "" ? <div className="error-alert">{error}</div> : <></>}
         </form>
       </div>
     </div>
   ) : (
-    <></>
+    <PacmanLoader color="#ffe4c4" className="loader" />
   );
 }
 
