@@ -181,15 +181,15 @@ export class UserHandler {
    *
    * @param {*} email The user's email.
    * @returns An object containing a boolean property "success" which
-   * is true if the retrieval was successfull, false otherwise.
+   * is true if the retrieval was successful, false otherwise.
    */
   async getUserByEmail(email: string): Promise<UserResponse> {
     // Search for the user by email
     const user = await UserModel.findOne({ where: { email: email } });
     if (user) {
-      return { success: true, msg: "User retrived succesfully", user: user };
+      return { success: true, msg: "User retrieved successfully", user: user };
     }
-    return { success: false, msg: "User dosen't exist" };
+    return { success: false, msg: "User doesn't exist" };
   }
   /**
    * Method that updates a user with a certain email.
