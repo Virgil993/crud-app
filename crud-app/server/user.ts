@@ -5,7 +5,6 @@ import { DataTypes, Sequelize } from "sequelize";
 import pg from 'pg';
 
 
-
 // The type that will be used for handling a user object
 export type User = {
   userId: number; 
@@ -31,41 +30,6 @@ export type AllUsersResponse = {
   err?: string;
 };
 
-const sequelize = new Sequelize(process.env.NEON_POSTGRES_URL || "", {
-  dialect: "postgres", // or your database type
-  dialectModule: pg,
-  define: {
-    timestamps: false, // This disables the created_at and updated_at columns
-  },
-  dialectOptions: {
-    ssl: {
-      require: true, // Use SSL with the 'require' option
-    },
-  },
-});
-
-UserModel.init(
-  {
-    userId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: DataTypes.STRING(512),
-    email: {
-      type: DataTypes.STRING(512),
-      unique: true,
-    },
-    gender: DataTypes.STRING(512),
-    verified: DataTypes.BOOLEAN,
-  },
-  {
-    sequelize,
-    modelName: "User",
-    tableName: "users", // Change 'users' to your actual table name
-  }
-);
-
 
 /**
  * The User server class that will be deployed on the genezio infrastructure.
@@ -73,6 +37,7 @@ UserModel.init(
 @GenezioDeploy()
 export class UserHandler {
   constructor() {
+
     this.#connect();
   }
 
@@ -81,8 +46,54 @@ export class UserHandler {
    */
   #connect() {
     try { 
+      // Check if you have a NEON_POSTGRES_URL variable
+      if(!process.env.NEON_POSTGRES_URL){ 
+        console.log('\x1b[31m%s\x1b[0m',"ERROR: Your NEON_POSTGRES_URL environment variable is not set, go to https://docs.genez.io/genezio-documentation/integrations/neon-postgres to learn how to integrate your project with Neon Postgres")
+        return;
+      }
+      
+      // Initialize the database connection manager
+      const sequelize = new Sequelize(process.env.NEON_POSTGRES_URL || "", {
+        dialect: "postgres", // or your database type
+        dialectModule: pg,
+        define: {
+          timestamps: false, // This disables the created_at and updated_at columns
+        },
+        dialectOptions: {
+          ssl: {
+            require: true, // Use SSL with the 'require' option
+          },
+        },
+      });
+      
+
+      // Intialize the UserModel
+      UserModel.init(
+        {
+          userId: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+          },
+          name: DataTypes.STRING(512),
+          email: {
+            type: DataTypes.STRING(512),
+            unique: true,
+          },
+          gender: DataTypes.STRING(512),
+          verified: DataTypes.BOOLEAN,
+        },
+        {
+          sequelize,
+          modelName: "User",
+          tableName: "users", // Change 'users' to your actual table name
+        }
+      ); 
+
+      
       sequelize.sync();
     } catch (err) {
+      console.log('\x1b[33m%s\x1b[0m',"WARNING: Check if your environment variables are correctly set")
       console.log(err);
     }
   }
