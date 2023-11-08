@@ -72,7 +72,6 @@ export class UserHandler {
         {
           userId: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             primaryKey: true,
           },
           name: DataTypes.STRING(512),
