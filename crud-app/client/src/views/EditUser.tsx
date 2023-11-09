@@ -10,7 +10,6 @@ function EditUser() {
   const [user, setUser] = useState<User | null>(null);
   const [name, setName] = useState<string>("");
   const [verified, setVerified] = useState<boolean | null>(null);
-  const [gender, setGender] = useState<string>("");
   const [error, setError] = useState("");
 
   const getUser = async (email: string) => {
@@ -21,7 +20,6 @@ function EditUser() {
     }
     setName(res.user!.name);
     setVerified(res.user!.verified);
-    setGender(res.user!.gender);
     setUser(res.user!);
   };
 
@@ -29,10 +27,6 @@ function EditUser() {
     event.preventDefault();
     if (name == "") {
       setError("Name is mandatory");
-      return;
-    }
-    if (gender == "") {
-      setError("Gender is mandatory");
       return;
     }
     if (verified == null) {
@@ -43,7 +37,6 @@ function EditUser() {
       userId: user!.userId,
       email: user!.email,
       name: name,
-      gender: gender,
       verified: verified,
     };
     const res = await UserHandler.updateUser(user!.email, newUser);
@@ -85,29 +78,6 @@ function EditUser() {
               value={name}
               onChange={(event) => setName(event.target.value)}
             />
-          </div>
-          <div className="form-group">
-            <label>Gender</label>
-            <div className="radio-button-container">
-              <input
-                name="gender"
-                type="radio"
-                value="Male"
-                defaultChecked={gender == "Male"}
-                onClick={() => setGender("Male")}
-              />
-              Male
-            </div>
-            <div className="radio-button-container">
-              <input
-                name="gender"
-                type="radio"
-                value="Female"
-                defaultChecked={gender == "Female"}
-                onClick={() => setGender("Female")}
-              />
-              Female
-            </div>
           </div>
           <div className="form-group">
             <label>Verified</label>

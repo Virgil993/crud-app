@@ -10,7 +10,6 @@ export type User = {
   userId: number; 
   name: string;
   email: string;
-  gender: string;
   verified: boolean;
 };
 
@@ -79,7 +78,6 @@ export class UserHandler {
             type: DataTypes.STRING(512),
             unique: true,
           },
-          gender: DataTypes.STRING(512),
           verified: DataTypes.BOOLEAN,
         },
         {
@@ -117,7 +115,6 @@ export class UserHandler {
    *
    * @param {*} name The user's name.
    * @param {*} email The user's email.
-   * @param {*} gender The user's gender.
    * @param {*} verified The user's verified status.
    * @returns An object containing a boolean property "success" which
    * is true if the creation was successfull, false otherwise.
@@ -126,7 +123,6 @@ export class UserHandler {
   async createUser(
     name: string,
     email: string,
-    gender: string,
     verified: boolean
   ): Promise<UserResponse> {
     // Check if email is the right format using regex
@@ -149,7 +145,6 @@ export class UserHandler {
         userId: maxId,
         name: name,
         email: email,
-        gender: gender,
         verified: verified,
       });
     } catch (err) {
@@ -223,7 +218,6 @@ export class UserHandler {
     try {
       user.set({
         name: updatedUser.name,
-        gender: updatedUser.gender,
         verified: updatedUser.verified,
       });
       await user.save();

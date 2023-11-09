@@ -7,7 +7,6 @@ function AddUser() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [verified, setVerified] = useState<boolean | null>(null);
-  const [gender, setGender] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
@@ -21,15 +20,11 @@ function AddUser() {
       setError("Email is mandatory");
       return;
     }
-    if (gender == "") {
-      setError("Gender is mandatory");
-      return;
-    }
     if (verified == null) {
       setError("Verified is mandatory");
       return;
     }
-    const res = await UserHandler.createUser(name, email, gender, verified);
+    const res = await UserHandler.createUser(name, email, verified);
     if (!res) {
       setError("Unexpected error, please try again later");
       return;
@@ -71,27 +66,6 @@ function AddUser() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-          </div>
-          <div className="form-group">
-            <label>Gender</label>
-            <div className="radio-button-container">
-              <input
-                name="gender"
-                type="radio"
-                value="Male"
-                onClick={() => setGender("Male")}
-              />
-              Male
-            </div>
-            <div className="radio-button-container">
-              <input
-                name="gender"
-                type="radio"
-                value="Female"
-                onClick={() => setGender("Female")}
-              />
-              Female
-            </div>
           </div>
           <div className="form-group">
             <label>Verified</label>

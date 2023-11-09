@@ -67,7 +67,6 @@ function Dashboard() {
               <div className="user" key={element.userId}>
                 <div>Name : {element.name}</div>
                 <div>Email : {element.email}</div>
-                <div>Gender : {element.gender}</div>
                 <div>Verified : {element.verified.toString()}</div>
                 <div>
                   <button

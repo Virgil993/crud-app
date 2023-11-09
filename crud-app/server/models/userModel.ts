@@ -5,6 +5,5 @@ export class UserModel extends Model {
   userId!: number;
   name!: string;
   email!: string;
-  gender!: string;
   verified!: boolean;
 }
